@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import CreateChallengePage from "~/domains/pages/create-challenge-page";
+import CreateChallengePage from "~/domains/challenges/pages/create-challenge-page";
 
 export const meta: MetaFunction = () => {
   return [
