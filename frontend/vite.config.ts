@@ -19,6 +19,7 @@ export default defineConfig({
         v3_singleFetch: true,
         v3_lazyRouteDiscovery: true,
       },
+      ssr: false,
     }),
     tsconfigPaths(),
     tailwindcss(),
