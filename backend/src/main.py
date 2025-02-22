@@ -1,16 +1,9 @@
 from fastapi import FastAPI
-from models.web_models import CreateCTFRequest
+from controllers.challenges_controller import challenges_router
 import uvicorn
 
 app = FastAPI()
 
-@app.get("/")
-def index():
-  return { "message": "Hello World" }
-
-@app.post("/ctf")
-async def create_ctf(request: CreateCTFRequest):
-  print(request)
-  return { "message": "CTF created" }
+app.include_router(challenges_router)
 
 uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -10,3 +10,7 @@ class Challenge(Model):
   @property
   def is_completed(self) -> bool:
     return self.completed_at is not None
+
+  model_config = {
+    "collection": "challenges"
+  }
