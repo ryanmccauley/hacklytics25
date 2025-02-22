@@ -35,3 +35,8 @@ mediator: Mediator[RequestT, ResponseT] = Mediator()
 
 def get_mediator() -> Mediator[RequestT, ResponseT]:
     return mediator
+
+class MediatorDTO(BaseModel):
+   model_config = ConfigDict(
+    arbitrary_types_allowed=True
+   )

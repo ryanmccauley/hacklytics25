@@ -1,11 +1,11 @@
 from enum import Enum
 
-class CTFCategory(Enum):
+class ChallengeCategory(Enum):
   WebExploitation = "WebExploitation"
   ReverseEngineering = "ReverseEngineering"
   SQLInjection = "SQLInjection"
 
-class CTFDifficulty(Enum):
+class ChallengeDifficulty(Enum):
   Easy = "Easy"
   Medium = "Medium"
   Hard = "Hard"

@@ -1,10 +1,11 @@
 from pydantic import BaseModel, ConfigDict
-from models.enums import CTFCategory, CTFDifficulty
+from models.enums import ChallengeCategory, ChallengeDifficulty
 from pydantic.alias_generators import to_camel
+from typing import Optional
 
-class CreateCTFRequest(BaseModel):
+class CreateChallengeRequest(BaseModel):
   model_config = ConfigDict(alias_generator=to_camel)
 
-  category: CTFCategory
-  difficulty: CTFDifficulty
-  additional_prompt: str
+  category: ChallengeCategory
+  difficulty: ChallengeDifficulty
+  additional_prompt: Optional[str] = None

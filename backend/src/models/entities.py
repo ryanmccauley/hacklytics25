@@ -2,7 +2,7 @@ from odmantic import Model
 from datetime import datetime
 from typing import Optional
 
-class CTFChallenge(Model):
+class Challenge(Model):
   category: str
   difficulty: str
   completed_at: Optional[datetime] = None
