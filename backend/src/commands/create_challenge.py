@@ -1,5 +1,7 @@
 from mediator import MediatorDTO, mediator
 from models.enums import ChallengeCategory, ChallengeDifficulty
+from models.entities import Challenge
+from database.mongo import engine
 from typing import Optional
 
 class CreateChallengeCommand(MediatorDTO):
@@ -12,4 +14,12 @@ class CreateChallengeResponse(MediatorDTO):
 
 @mediator.register_handler(CreateChallengeCommand)
 async def create_challenge(command: CreateChallengeCommand) -> CreateChallengeResponse:
-  pass
+  challenge = Challenge(
+    category=command.category,
+    difficulty=command.difficulty,
+    additional_prompt=command.additional_prompt
+  )
+
+  await engine.save(challenge)
+
+  return CreateChallengeResponse(challenge_id=challenge.id)
