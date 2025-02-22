@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import CreateChallengePage from "~/domains/pages/create-challenge-page";
 
 export const meta: MetaFunction = () => {
   return [
@@ -8,9 +9,5 @@ export const meta: MetaFunction = () => {
 };
 
 export default () => {
-  return (
-    <p>
-      Hello world
-    </p>
-  )
+  return <CreateChallengePage />
 }

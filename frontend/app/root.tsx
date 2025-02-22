@@ -41,5 +41,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <div className="min-h-screen h-screen bg-gray-50">
+      <Outlet />
+    </div>
+  )
 }
