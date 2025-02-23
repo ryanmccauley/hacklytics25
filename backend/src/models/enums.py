@@ -1,11 +1,13 @@
 from enum import Enum
 
+
 class ChallengeCategory(Enum):
-  WebExploitation = "WebExploitation"
-  ReverseEngineering = "ReverseEngineering"
-  SQLInjection = "SQLInjection"
+    WebExploitation = "WebExploitation"
+    ReverseEngineering = "ReverseEngineering"
+    SQLInjection = "SQLInjection"
+
 
 class ChallengeDifficulty(Enum):
-  Easy = "Easy"
-  Medium = "Medium"
-  Hard = "Hard"
+    Easy = "Easy"
+    Medium = "Medium"
+    Hard = "Hard"

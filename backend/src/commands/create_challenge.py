@@ -9,57 +9,69 @@ from settings import global_settings
 from odmantic import ObjectId
 from langchain_core.prompts import PromptTemplate
 
+
 class CreateChallengeCommand(MediatorDTO):
-  category: ChallengeCategory
-  difficulty: ChallengeDifficulty
-  additional_prompt: Optional[str] = None
+    category: ChallengeCategory
+    difficulty: ChallengeDifficulty
+    additional_prompt: Optional[str] = None
+
 
 class CreateChallengeResponse(MediatorDTO):
-  challenge: Challenge
+    challenge: Challenge
+
 
 class ChallengeOuptut(BaseModel):
-  model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-  title: str
-  setup_instructions: str = Field(description="List of instructions for the user to setup the challenge on their environment. This will be stored in an README.md file")
-  description: str = Field(description="A short one to two sentence description of the challenge")
-  flag_solution: str = Field(description="The solution to the challenge")
-  files: list[ChallengeFile]
+    title: str
+    setup_instructions: str = Field(
+        description="List of instructions for the user to setup the challenge on their environment. This will be stored in an README.md file"
+    )
+    description: str = Field(
+        description="A short one to two sentence description of the challenge"
+    )
+    flag_solution: str = Field(description="The solution to the challenge")
+    files: list[ChallengeFile]
 
 
 @mediator.register_handler(CreateChallengeCommand)
 async def create_challenge(command: CreateChallengeCommand) -> CreateChallengeResponse:
-  outline = await create_challenge_outline(command)
-  output = await create_challenge_output(outline)
+    outline = await create_challenge_outline(command)
+    output = await create_challenge_output(outline)
 
-  challenge = Challenge(
-    id=ObjectId(),
-    category=command.category,
-    difficulty=command.difficulty,
-    title=output.title,
-    setup_instructions=output.setup_instructions,
-    description=output.description,
-    flag_solution=output.flag_solution,
-    files=output.files
-  )
+    challenge = Challenge(
+        id=ObjectId(),
+        category=command.category,
+        difficulty=command.difficulty,
+        title=output.title,
+        setup_instructions=output.setup_instructions,
+        description=output.description,
+        flag_solution=output.flag_solution,
+        files=output.files,
+    )
 
-  await engine.save(challenge)
+    await engine.save(challenge)
 
-  return CreateChallengeResponse(challenge=challenge)
+    return CreateChallengeResponse(challenge=challenge)
+
 
 async def create_challenge_outline(command: CreateChallengeCommand) -> str:
-  """
-  Create a challenge outline for a given challenge category and difficulty.
+    """
+    Create a challenge outline for a given challenge category and difficulty.
 
-  Args:
-    command: CreateChallengeCommand
+    Args:
+      command: CreateChallengeCommand
 
-  Returns:
-    str
-  """
+    Returns:
+      str
+    """
 
-  model = ChatOpenAI(model="o3-mini-2025-01-31", api_key=global_settings.OPENAI_API_KEY, max_completion_tokens=4096)
-  prompt = PromptTemplate.from_template("""
+    model = ChatOpenAI(
+        model="o3-mini-2025-01-31",
+        api_key=global_settings.OPENAI_API_KEY,
+        max_completion_tokens=4096,
+    )
+    prompt = PromptTemplate.from_template("""
     You are an Instant CTF Agent Generator responsible for creating a custom outline for a CTF challenge. Your output is a structured outline that will later be used to generate the final output files (challenge instructions and setup instructions). This outline must clearly determine:
 1. What kind of challenge within the given category should be developed.
 2. What code components and technical steps are needed to implement this challenge.
@@ -223,7 +235,7 @@ Your goal is to produce an outline that is creative, technically detailed, and i
 
 By following this template and including these detailed examples, you will provide a robust blueprint that guides subsequent steps in generating fully functional CTF output files—challenge instructions and setup instructions—and ultimately deliver an engaging, multi-modal, and thematic CTF challenge experience.""")
 
-  prompt = PromptTemplate.from_template("""
+    prompt = PromptTemplate.from_template("""
 OVERVIEW: You are an Instant CTF Agent Generator. Your sole task is to produce a fully detailed and explicit outline for a custom CTF challenge. This outline will be used as the definitive blueprint to generate two sets of output files: Challenge Instructions – a document explaining the challenge narrative and step-by-step tasks for the user, and Setup Instructions – a guide describing every step required to configure, deploy, and test the challenge environment. Every element must be fully explained with no assumption of prior knowledge. Every instruction, step, component, and rationale is included so that each directive can be executed without ambiguity.
 
 USER INPUT PARAMETERS:
@@ -363,18 +375,27 @@ Consistency: Ensure that every mention of the challenge category and difficulty 
 FINAL REMINDER: Every minute detail of the challenge narrative and technical implementation must be included. Do not assume any prior background or reasoning ability. Each instruction is fully spelled out so that another system or robot can execute the steps without any additional interpretation. This output serves as a definitive, unambiguous blueprint for building both the challenge instructions and the setup instructions.
 """)
 
-  response = model.invoke(prompt.invoke({
-    "category": command.category.value, 
-    "difficulty": command.difficulty.value,
-    "additional_prompt": command.additional_prompt
-  }))
+    response = model.invoke(
+        prompt.invoke(
+            {
+                "category": command.category.value,
+                "difficulty": command.difficulty.value,
+                "additional_prompt": command.additional_prompt,
+            }
+        )
+    )
 
-  return response.content
+    return response.content
+
 
 async def create_challenge_output(outline: str) -> ChallengeOuptut:
-  model = ChatOpenAI(model="o3-mini-2025-01-31", api_key=global_settings.OPENAI_API_KEY, max_completion_tokens=4096)
-  structured_model = model.with_structured_output(ChallengeOuptut)
+    model = ChatOpenAI(
+        model="o3-mini-2025-01-31",
+        api_key=global_settings.OPENAI_API_KEY,
+        max_completion_tokens=4096,
+    )
+    structured_model = model.with_structured_output(ChallengeOuptut)
 
-  response = structured_model.invoke(outline)
+    response = structured_model.invoke(outline)
 
-  return response
+    return response
