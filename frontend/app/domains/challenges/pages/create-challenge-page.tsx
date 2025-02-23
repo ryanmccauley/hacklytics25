@@ -49,8 +49,6 @@ export default function CreateChallengePage() {
             <label htmlFor="category" className="block text-sm font-medium text-gray-700">
               Challenge Category
             </label>
-            </h5>
-            
           </div>
 
           <div className="flex flex-col">
