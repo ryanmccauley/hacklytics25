@@ -8,7 +8,8 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "check": "bunx biome check --write app/"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.1",
@@ -39,6 +40,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@remix-run/dev": "^2.15.3",
     "@tailwindcss/typography": "^0.5.16",
     "@types/react": "^18.2.20",
