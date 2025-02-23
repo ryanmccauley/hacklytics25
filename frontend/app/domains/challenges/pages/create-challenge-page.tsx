@@ -7,17 +7,17 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { ChallengeCategory, ChallengeDifficulty } from "../types"
 
-export default () => {
-  const [selectedCategory, setSelectedCategory] = useState("Web Security")
-  const [selectedDifficulty, setSelectedDifficulty] = useState("Easy")
+export default function CreateChallengePage() {
+  const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory>(ChallengeCategory.WEB_SECURITY)
+  const [selectedDifficulty, setSelectedDifficulty] = useState<ChallengeDifficulty>(ChallengeDifficulty.EASY)
+
   return (
     <div className="flex flex-col h-full items-center justify-center">
       <div className="bg-white max-w-4xl w-full rounded-lg shadow-sm border border-gray-200 p-8 flex flex-col space-y-4">
         <div className="flex flex-col">
-          <h1
-            className="text-2xl font-semibold tracking-tight"
-          >
+          <h1 className="text-2xl font-semibold tracking-tight">
             InstantCTF
           </h1>
           <p>
@@ -26,9 +26,9 @@ export default () => {
         </div>
         <div className="flex flex-col space-y-2">
           <div className="flex flex-col">
-            <h5>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700">
               Challenge Category
-            </h5>
+            </label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -37,22 +37,22 @@ export default () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-full min-w-[200px]">
-                <DropdownMenuItem onClick={() => setSelectedCategory("Web Exploitation")}>
-                  Web Exploitation
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedCategory("Reverse Engineering")}>
-                  Reverse Engineering
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedCategory("SQL Injection")}>
-                  Miscellaneous
-                </DropdownMenuItem>
+                {Object.values(ChallengeCategory).map((category) => (
+                  <DropdownMenuItem
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
           <div className="flex flex-col">
-            <h5>
-              Challenge Difficulty
-            </h5>
+            <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700">
+              Difficulty Level
+            </label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -61,26 +61,28 @@ export default () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-full min-w-[200px]">
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Easy")}>
-                  Easy
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Medium")}>
-                  Medium
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Hard")}>
-                  Hard
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Impossible")}>
-                  Impossible
-                </DropdownMenuItem>
+                {Object.values(ChallengeDifficulty).map((difficulty) => (
+                  <DropdownMenuItem
+                    key={difficulty}
+                    onClick={() => setSelectedDifficulty(difficulty)}
+                  >
+                    {difficulty}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
-
           </div>
           <div className="flex flex-col">
-            <h5>
+            <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">
               Additional Information
-            </h5>
+            </label>
+            <textarea
+              id="additionalInfo"
+              name="additionalInfo"
+              rows={3}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Add any specific requirements or context for your challenge"
+            />
           </div>
           <div className="flex items-center justify-end">
             <Button
