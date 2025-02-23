@@ -1,10 +1,11 @@
 import { Button } from "~/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 
@@ -29,52 +30,32 @@ export default () => {
             <h5>
               Challenge Category
             </h5>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  {selectedCategory}
-                  <ChevronDown className="h-4 w-4 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full min-w-[200px]">
-                <DropdownMenuItem onClick={() => setSelectedCategory("Web Exploitation")}>
-                  Web Exploitation
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedCategory("Reverse Engineering")}>
-                  Reverse Engineering
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedCategory("SQL Injection")}>
-                  SQL Injection
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Select onValueChange={(value) => console.log(value)}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a category" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="web">Web Exploitation</SelectItem>
+          <SelectItem value="reverse">Reverse Engineering</SelectItem>
+          <SelectItem value="sql">SQL Injection</SelectItem>
+        </SelectContent>
+      </Select>
           </div>
           <div className="flex flex-col">
             <h5>
               Challenge Difficulty
             </h5>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  {selectedDifficulty}
-                  <ChevronDown className="h-4 w-4 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full min-w-[200px]">
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Easy")}>
-                  Easy
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Medium")}>
-                  Medium
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Hard")}>
-                  Hard
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedDifficulty("Impossible")}>
-                  Impossible
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Select onValueChange={(value) => console.log(value)}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a category" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="Easy">Easy</SelectItem>
+          <SelectItem value="Medium">Medium</SelectItem>
+          <SelectItem value="Hard">Hard</SelectItem>
+          <SelectItem value="Impossible">Impossible</SelectItem>
+        </SelectContent>
+      </Select>
 
           </div>
           <div className="flex flex-col">
