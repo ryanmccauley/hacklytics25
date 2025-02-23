@@ -9,8 +9,8 @@ import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 
 export default () => {
-  const [selectedCategory, setSelectedCategory] = useState("Web Security")
-  const [selectedDifficulty, setSelectedDifficulty] = useState("Easy")
+  const [selectedCategory, setSelectedCategory] = useState("Challenge Category")
+  const [selectedDifficulty, setSelectedDifficulty] = useState("Challenge Difficulty")
   return (
     <div className="flex flex-col h-full items-center justify-center">
       <div className="bg-white max-w-4xl w-full rounded-lg shadow-sm border border-gray-200 p-8 flex flex-col space-y-4">

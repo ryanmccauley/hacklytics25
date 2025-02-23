@@ -7,34 +7,17 @@ import {
 } from "~/components/ui/dropdown-menu"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
-import { ChallengeCategory, ChallengeDifficulty } from "../types"
-import { useNavigate } from "@remix-run/react"
-import challengeService from "../challenge-service"
 
-export default function CreateChallengePage() {
-  const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory>(ChallengeCategory.WEB_SECURITY)
-  const [selectedDifficulty, setSelectedDifficulty] = useState<ChallengeDifficulty>(ChallengeDifficulty.EASY)
-  const navigate = useNavigate()
-
-  async function onSubmit() {
-    try {
-      const response = await challengeService.mutations.createChallenge({
-        category: selectedCategory,
-        difficulty: selectedDifficulty,
-        additionalPrompt: "", // Get this from the form
-      });
-      navigate(`/challenge/${response.id}`);
-    } catch (error) {
-      console.error("Error creating challenge:", error);
-      // Handle the error, show a message to the user
-    }
-  }
-
+export default () => {
+  const [selectedCategory, setSelectedCategory] = useState("Challenge Category")
+  const [selectedDifficulty, setSelectedDifficulty] = useState("Challenge Difficulty")
   return (
     <div className="flex flex-col h-full items-center justify-center">
       <div className="bg-white max-w-4xl w-full rounded-lg shadow-sm border border-gray-200 p-8 flex flex-col space-y-4">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1
+            className="text-2xl font-semibold tracking-tight"
+          >
             InstantCTF
           </h1>
           <p>
@@ -43,9 +26,9 @@ export default function CreateChallengePage() {
         </div>
         <div className="flex flex-col space-y-2">
           <div className="flex flex-col">
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+            <h5>
               Challenge Category
-            </label>
+            </h5>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -54,22 +37,22 @@ export default function CreateChallengePage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-full min-w-[200px]">
-                {Object.values(ChallengeCategory).map((category) => (
-                  <DropdownMenuItem
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </DropdownMenuItem>
-                ))}
+                <DropdownMenuItem onClick={() => setSelectedCategory("Web Exploitation")}>
+                  Web Exploitation
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCategory("Reverse Engineering")}>
+                  Reverse Engineering
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCategory("SQL Injection")}>
+                  SQL Injection
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
           <div className="flex flex-col">
-            <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700">
-              Difficulty Level
-            </label>
+            <h5>
+              Challenge Difficulty
+            </h5>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
@@ -78,31 +61,31 @@ export default function CreateChallengePage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-full min-w-[200px]">
-                {Object.values(ChallengeDifficulty).map((difficulty) => (
-                  <DropdownMenuItem
-                    key={difficulty}
-                    onClick={() => setSelectedDifficulty(difficulty)}
-                  >
-                    {difficulty}
-                  </DropdownMenuItem>
-                ))}
+                <DropdownMenuItem onClick={() => setSelectedDifficulty("Easy")}>
+                  Easy
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedDifficulty("Medium")}>
+                  Medium
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedDifficulty("Hard")}>
+                  Hard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedDifficulty("Impossible")}>
+                  Impossible
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
           </div>
           <div className="flex flex-col">
-            <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">
+            <h5>
               Additional Information
-            </label>
-            <textarea
-              id="additionalInfo"
-              name="additionalInfo"
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Add any specific requirements or context for your challenge"
-            />
+            </h5>
           </div>
           <div className="flex items-center justify-end">
-            <Button size="lg" onClick={onSubmit}>
+            <Button
+              size="lg"
+            >
               Create Challenge
             </Button>
           </div>

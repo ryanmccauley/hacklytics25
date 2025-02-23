@@ -1,5 +1,5 @@
 import http from "~/lib/axios"
-import { Challenge, CreateChallengeRequest } from "../types"
+import { Challenge, CreateChallengeRequest } from "./types"
 
 const BASE_PATH = '/challenges'
 
