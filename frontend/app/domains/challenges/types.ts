@@ -7,20 +7,18 @@ export enum ChallengeCategory {
 export enum ChallengeDifficulty {
   EASY = 'Easy',
   MEDIUM = 'Medium',
-  HARD = 'Hard',
-  EXPERT = 'Expert'
+  HARD = 'Hard'
 }
 
 export interface Challenge {
-  id: string;
-  name: string;
-  description: string;
-  category: ChallengeCategory;
-  difficulty: ChallengeDifficulty;
+  id: string
+  title: string
+  category: ChallengeCategory
+  difficulty: ChallengeDifficulty
 }
 
 export interface CreateChallengeRequest {
-  category: ChallengeCategory;
-  difficulty: ChallengeDifficulty;
-  additionalPrompt?: string;
+  category: ChallengeCategory
+  difficulty: ChallengeDifficulty
+  additionalPrompt?: string
 }

@@ -1,14 +1,20 @@
 import { Button } from "~/components/ui/button"
-import { Challenge } from "../types"
-import { ChevronLeftIcon, CloudDownloadIcon } from "lucide-react"
+import { Challenge, ChallengeDifficulty } from "../types"
+import { BookOpenIcon, ChevronLeftIcon, CloudDownloadIcon, FlipHorizontal2 } from "lucide-react"
 import { Link } from "@remix-run/react"
 import challengeService from "../challenge-service"
+import { useState } from "react"
+import ChatTextInput from "../components/chat-text-input"
+import { Badge } from "~/components/ui/badge"
+import { cn } from "~/lib/utils"
 
 export interface ChallengeChatPageProps {
   challenge: Challenge
 }
 
 export default ({ challenge }: ChallengeChatPageProps) => {
+  const [content, setContent] = useState("")
+
   async function downloadChallengeFiles() {
     const files = await challengeService.queries.getChallengeFiles(challenge.id)
     const url = window.URL.createObjectURL(new Blob([files]))
@@ -22,33 +28,64 @@ export default ({ challenge }: ChallengeChatPageProps) => {
 
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col items-center relative">
       <div className="absolute top-0 left-0 w-full p-4 flex items-center justify-between">
-        <Link
-          to="/"
-        >
-          <Button
-            variant="ghost"
-            size="icon"
+        <div className="flex items-center space-x-2">
+          <Link
+            to="/"
           >
-            <ChevronLeftIcon className="scale-140" />
+            <Button
+              variant="ghost"
+              size="icon"
+            >
+              <ChevronLeftIcon className="scale-140" />
+            </Button>
+          </Link>
+          <div className="flex items-center space-x-2">
+            <h2
+              className="text-lg font-medium"
+            >
+              { challenge.title }
+            </h2>
+            <Badge
+              variant="outline"
+              className={cn(
+                "text-sm",
+                challenge.difficulty === ChallengeDifficulty.EASY && "bg-green-500/20",
+                challenge.difficulty === ChallengeDifficulty.MEDIUM && "bg-yellow-500/20",
+                challenge.difficulty === ChallengeDifficulty.HARD && "bg-red-500/20",
+              )}
+            >
+              { challenge.difficulty }
+            </Badge>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="lg"
+          >
+            <BookOpenIcon />
+            View Instructions
           </Button>
-        </Link>
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={downloadChallengeFiles}
-        >
-          <CloudDownloadIcon />
-          Download Files
-        </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={downloadChallengeFiles}
+          >
+            <CloudDownloadIcon />
+            Download Files
+          </Button>
+        </div>
       </div>
       <div className="flex-1">
 
       </div>
-      <div className="bg-blue-500 w-full pb-4">
-        Hello world
-      </div>
+      <ChatTextInput
+        value={content}
+        onChange={setContent}
+        onSubmit={() => alert("hello orld")}
+      />
     </div>
   )
 }
