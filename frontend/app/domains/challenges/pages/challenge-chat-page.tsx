@@ -19,6 +19,7 @@ import ChatTextInput from "../components/chat-text-input"
 import CompleteChallengeDialog from "../components/complete-challenge-dialog"
 import ViewInstructionsDialog from "../components/view-instructions-dialog"
 import { Challenge, ChallengeDifficulty } from "../types"
+import { toast } from "sonner"
 
 export interface ChallengeChatPageProps {
   challenge: Challenge
@@ -53,6 +54,8 @@ export default ({
     document.body.appendChild(a)
     a.click()
     a.remove()
+
+    toast("Challenge files downloaded successfully")
   }
 
   async function onSubmit() {

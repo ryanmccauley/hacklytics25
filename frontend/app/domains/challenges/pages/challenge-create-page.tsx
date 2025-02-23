@@ -24,6 +24,7 @@ import { Textarea } from "~/components/ui/textarea"
 import { useLocalStorage } from "~/hooks/use-local-storage"
 import challengeService from "../challenge-service"
 import { Challenge, ChallengeCategory, ChallengeDifficulty } from "../types"
+import { toast } from "sonner"
 
 const CreateChallengeFormSchema = z.object({
   category: z.nativeEnum(ChallengeCategory),
@@ -53,8 +54,12 @@ export default function CreateChallengePage() {
   const { mutate: createChallenge, isPending } = useMutation({
     mutationFn: challengeService.mutations.createChallenge,
     onSuccess: (data) => {
+      toast("Challenge created successfully")
       navigate(`/challenge/${data.id}`)
     },
+    onMutate: () => {
+      toast("Creating challenge... This may take a few minutes")
+    }
   })
 
   return (
