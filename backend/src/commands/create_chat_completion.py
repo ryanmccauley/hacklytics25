@@ -33,7 +33,6 @@ async def create_challenge_chat_completion(
     system_prompt = PromptTemplate.from_template(CHALLENGE_CHAT_PROMPT).invoke(
         {"challenge": challenge.model_dump_json()}
     )
-    print(system_prompt.text)
 
     messages = format_messages(
         command.messages, SystemMessage(content=system_prompt.text)

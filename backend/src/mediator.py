@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Callable, Dict, Type, Awaitable, TypeVar, Generic, ClassVar
+from starlette.concurrency import run_in_threadpool
+from asgiref.sync import async_to_sync
 
 RequestT = TypeVar("RequestT", bound=BaseModel)
 ResponseT = TypeVar("ResponseT")
@@ -34,6 +36,10 @@ class Mediator(BaseModel, Generic[RequestT, ResponseT]):
             return await handler(request)
         else:
             raise ValueError(f"No request handler found for {type(request)}")
+
+    async def asend(self, request: RequestT) -> ResponseT:
+        sync_send = async_to_sync(self.send)
+        return await run_in_threadpool(sync_send, request)
 
 
 mediator: Mediator[RequestT, ResponseT] = Mediator()

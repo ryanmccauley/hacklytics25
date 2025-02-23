@@ -58,8 +58,7 @@ async def create_challenge(command: CreateChallengeCommand) -> CreateChallengeRe
 
 async def create_challenge_outline(command: CreateChallengeCommand) -> str:
     model = ChatOpenAI(
-        model="o3-mini-2025-01-31",
-        api_key=global_settings.OPENAI_API_KEY
+        model="o3-mini-2025-01-31", api_key=global_settings.OPENAI_API_KEY
     )
     prompt = PromptTemplate.from_template(CHALLENGE_OUTLINE_PROMPT)
     response = model.invoke(
@@ -77,8 +76,7 @@ async def create_challenge_outline(command: CreateChallengeCommand) -> str:
 
 async def create_challenge_output(outline: str) -> ChallengeOuptut:
     model = ChatOpenAI(
-        model="o3-mini-2025-01-31",
-        api_key=global_settings.OPENAI_API_KEY
+        model="o3-mini-2025-01-31", api_key=global_settings.OPENAI_API_KEY
     )
     structured_model = model.with_structured_output(ChallengeOuptut)
     prompt = PromptTemplate.from_template(CHALLENGE_INSTRUCTIONS_PROMPT)
