@@ -1,4 +1,6 @@
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "~/components/ui/dialog"
+import ReactMarkdown from "react-markdown"
+import { Button } from "~/components/ui/button"
 
 export interface ViewInstructionsDialogProps {
   open: boolean
@@ -17,7 +19,22 @@ export default (props: ViewInstructionsDialogProps) => {
         {props.children}
       </DialogTrigger>
       <DialogContent>
-        Hello world
+        <DialogHeader className="font-semibold">
+          Challenge Setup Instructions
+        </DialogHeader>
+        <div className="prose">
+          <ReactMarkdown>
+            { props.instructions }
+          </ReactMarkdown>
+        </div>
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => props.onOpenChange(false)}
+          >
+            Close
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

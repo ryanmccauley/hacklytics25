@@ -2,13 +2,18 @@ from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from database.mongo import engine
 from models.entities import Challenge
-from models.web_models import CreateChallengeRequest
+from models.web_models import CreateChallengeRequest, CreateChatCompletionRequest
 from commands.create_challenge import CreateChallengeCommand, CreateChallengeResponse
 from mediator import Mediator, get_mediator
 from odmantic import ObjectId
 from queries.get_challenge import GetChallengeQuery, GetChallengeQueryResponse
 from commands.create_challenge_download import CreateChallengeDownloadCommand, CreateChallengeDownloadResponse
+from commands.create_chat_completion import CreateChallengeChatCompletionCommand
+from commands.create_message import CreateMessageCommand, CreateMessageCommandResponse
 from io import BytesIO
+from queries.list_messages import ListMessagesQuery, ListMessagesQueryResponse
+from models.web_models import CreateMessageRequest
+import asyncio
 
 challenges_router = APIRouter(prefix="/challenges")
 
@@ -38,7 +43,7 @@ async def create_challenge(
 
   response = await mediator.send(command)
 
-  return { "id": response.challenge_id }
+  return response.challenge
 
 @challenges_router.get("/{id}/files")
 async def create_challenge_download(
@@ -51,11 +56,48 @@ async def create_challenge_download(
   headers = {"Content-Disposition": f"attachment; filename=challenge-{id}.zip"}
   return StreamingResponse(BytesIO(response.file_contents), media_type="application/zip", headers=headers)
 
-@challenges_router.post("/{id}/completions")
-async def create_challenge_chat_completion(id: str):
-  challenge = await engine.find_one(Challenge, Challenge.id == id)
+@challenges_router.get("/{id}/messages")
+async def list_messages(
+  id: str,
+  mediator: Mediator[ListMessagesQuery, ListMessagesQueryResponse] = Depends(get_mediator)
+):
+  query = ListMessagesQuery(challenge_id=id)
+  response = await mediator.send(query)
+
+  return response.messages
+
+@challenges_router.post("/{id}/messages")
+async def create_message(
+  id: str,
+  request: CreateMessageRequest,
+  mediator: Mediator[CreateMessageCommand, CreateMessageCommandResponse] = Depends(get_mediator)
+):
+  command = CreateMessageCommand(
+    challenge_id=id,
+    content=request.content,
+    role=request.role
+  )
+
+  response = await mediator.send(command)
+
+  return response.message
+
+@challenges_router.post("/{id}/chat-completion")
+async def create_challenge_chat_completion(
+  id: str,
+  request: CreateChatCompletionRequest,
+  mediator: Mediator[CreateChallengeChatCompletionCommand, StreamingResponse] = Depends(get_mediator)
+):
+  challenge = await engine.find_one(Challenge, Challenge.id == ObjectId(id))
 
   if challenge is None:
     raise HTTPException(status_code=404)
 
-  pass
+  command = CreateChallengeChatCompletionCommand(
+    challenge_id=id,
+    messages=request.messages
+  )
+
+  response = await mediator.send(command)
+
+  return response

@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useId, useRef } from "react"
 import { Button } from "~/components/ui/button"
 
 export interface ChatTextInputProps {
+  disabled?: boolean
   value: string
   onChange: (value: string) => void
   onSubmit: () => void
@@ -39,12 +40,18 @@ export default (props: ChatTextInputProps) => {
   function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
       event.preventDefault()
-      props.onSubmit()
+      handleSubmit()
     }
   }
 
+  function handleSubmit() {
+    if (props.value.trim().length === 0) return;
+
+    props.onSubmit()
+  }
+
   return (
-    <div className="flex items-center justify-between max-w-3xl w-full bg-white space-x-2 mb-8 p-2 rounded-lg shadow border border-gray-200">
+    <div className="flex items-center justify-between max-w-3xl w-full bg-white space-x-2 mb-6 p-2 rounded-lg shadow border border-gray-200">
       <textarea
         id={areaId}
         ref={areaRef}
@@ -54,11 +61,13 @@ export default (props: ChatTextInputProps) => {
         onKeyDown={onKeyDown}
         rows={defaultRows}
         className="w-full flex-1 outline-none resize-none p-2"
+        disabled={props.disabled}
       />
       <div className="flex items-center justify-end">
         <Button
+          disabled={props.disabled}
           size="icon"
-          onClick={props.onSubmit}
+          onClick={handleSubmit}
         >
           <ChevronUpIcon />
         </Button>

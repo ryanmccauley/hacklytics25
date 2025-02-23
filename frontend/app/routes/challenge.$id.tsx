@@ -3,15 +3,21 @@ import challengeService from "~/domains/challenges/challenge-service"
 import ChallengeChatPage from "~/domains/challenges/pages/challenge-chat-page"
 
 export async function clientLoader({ params: { id } }: { params: { id: string } }) {
-  const challenge = await challengeService.queries.getChallenge(id)
+  const [challenge, messages] = await Promise.all([
+    challengeService.queries.getChallenge(id),
+    challengeService.queries.listMessages(id)
+  ])
 
-  return challenge
+  return {
+    challenge,
+    messages
+  }
 }
 
 export default () => {
-  const challenge = useLoaderData<typeof clientLoader>()
+  const { challenge, messages } = useLoaderData<typeof clientLoader>()
 
   return (
-    <ChallengeChatPage challenge={challenge} />
+    <ChallengeChatPage challenge={challenge} messages={messages} />
   )
 }
