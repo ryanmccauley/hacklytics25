@@ -32,6 +32,10 @@ export default {
       for await (const chunk of stream as AsyncIterable<Uint8Array>) {
         yield decoder.decode(chunk, { stream: true })
       }
+    },
+    completeChallenge: async (id: string, flag: string) => {
+      const { data } = await http.post(`${BASE_PATH}/${id}/complete`, { flag })
+      return data
     }
   },
   queries: {

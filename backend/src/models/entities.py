@@ -16,6 +16,7 @@ class Challenge(Model):
   description: str
   flag_solution: str
   files: List[ChallengeFile]
+  completed_at: Optional[datetime] = None
 
   model_config = {
     "collection": "challenges"

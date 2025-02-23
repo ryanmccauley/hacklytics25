@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Response
 from fastapi.responses import StreamingResponse
 from database.mongo import engine
 from models.entities import Challenge
@@ -12,7 +12,8 @@ from commands.create_chat_completion import CreateChallengeChatCompletionCommand
 from commands.create_message import CreateMessageCommand, CreateMessageCommandResponse
 from io import BytesIO
 from queries.list_messages import ListMessagesQuery, ListMessagesQueryResponse
-from models.web_models import CreateMessageRequest
+from models.web_models import CreateMessageRequest, CompleteChallengeRequest
+from commands.complete_challenge import CompleteChallengeCommand
 import asyncio
 
 challenges_router = APIRouter(prefix="/challenges")
@@ -44,6 +45,21 @@ async def create_challenge(
   response = await mediator.send(command)
 
   return response.challenge
+
+@challenges_router.post("/{id}/complete")
+async def complete_challenge(
+  id: str,
+  request: CompleteChallengeRequest,
+  mediator: Mediator[CompleteChallengeCommand, any] = Depends(get_mediator)
+):
+  command = CompleteChallengeCommand(
+    challenge_id=id,
+    flag=request.flag
+  )
+
+  await mediator.send(command)
+
+  return Response(status_code=204)
 
 @challenges_router.get("/{id}/files")
 async def create_challenge_download(

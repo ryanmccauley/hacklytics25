@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "~/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog"
 import ReactMarkdown from "react-markdown"
 import { Button } from "~/components/ui/button"
 
@@ -19,8 +19,8 @@ export default (props: ViewInstructionsDialogProps) => {
         {props.children}
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader className="font-semibold">
-          Challenge Setup Instructions
+        <DialogHeader>
+          <DialogTitle>Challenge Setup Instructions</DialogTitle>
         </DialogHeader>
         <div className="prose">
           <ReactMarkdown>

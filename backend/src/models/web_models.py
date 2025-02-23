@@ -23,3 +23,6 @@ class CreateChatCompletionRequest(BaseModel):
 class CreateMessageRequest(BaseModel):
   content: str
   role: Literal["user", "assistant"]
+
+class CompleteChallengeRequest(BaseModel):
+  flag: str

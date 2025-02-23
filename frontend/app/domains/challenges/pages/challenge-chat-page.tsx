@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button"
 import { Challenge, ChallengeDifficulty } from "../types"
-import { BookOpenIcon, ChevronLeftIcon, CloudDownloadIcon, FlipHorizontal2 } from "lucide-react"
+import { BookOpenIcon, ChevronLeftIcon, CloudDownloadIcon, FlagIcon, FlipHorizontal2 } from "lucide-react"
 import { Link } from "@remix-run/react"
 import challengeService from "../challenge-service"
 import { useEffect, useMemo, useReducer, useState } from "react"
@@ -12,6 +12,7 @@ import { useLocalStorage } from "~/hooks/use-local-storage"
 import { Message, useChatMessages } from "~/hooks/use-chat-messages"
 import { useMutation } from "@tanstack/react-query"
 import ReactMarkdown from "react-markdown"
+import CompleteChallengeDialog from "../components/complete-challenge-dialog"
 
 export interface ChallengeChatPageProps {
   challenge: Challenge,
@@ -221,6 +222,15 @@ export default ({ challenge, messages: initialMessages }: ChallengeChatPageProps
           </div>
         </div>
         <div className="flex items-center space-x-2">
+          <CompleteChallengeDialog challenge={challenge}>
+            <Button
+              variant="outline"
+              size="lg"
+            >
+              <FlagIcon />
+              Complete Challenge
+            </Button>
+          </CompleteChallengeDialog>
           <ViewInstructionsDialog
             open={viewInstructionsDialogOpen}
             onOpenChange={setViewInstructionsDialogOpen}
