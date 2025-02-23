@@ -6,9 +6,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select"
-import { useState } from "react"
-import { ChevronDown, WandSparklesIcon } from "lucide-react"
-import { ChallengeCategory, ChallengeDifficulty } from "../types"
+import { Link } from "@remix-run/react"
+import { WandSparklesIcon } from "lucide-react"
+import { Challenge, ChallengeCategory, ChallengeDifficulty } from "../types"
 import { useNavigate } from "@remix-run/react"
 import challengeService from "../challenge-service"
 import * as z from "zod"
@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "~/components/ui/form"
 import { Textarea } from "~/components/ui/textarea"
+import { useLocalStorage } from "~/hooks/use-local-storage"
 
 const CreateChallengeFormSchema = z.object({
   category: z.nativeEnum(ChallengeCategory),
@@ -25,6 +26,7 @@ const CreateChallengeFormSchema = z.object({
 })
 
 export default function CreateChallengePage() {
+  const [recentChallenges, setRecentChallenges] = useLocalStorage<Challenge[]>("recent-challenges", [])
   const navigate = useNavigate()
   const form = useForm<z.infer<typeof CreateChallengeFormSchema>>({
     resolver: zodResolver(CreateChallengeFormSchema),
@@ -50,7 +52,7 @@ export default function CreateChallengePage() {
   })
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center space-y-8 justify-center min-h-screen p-16">
       <div className="flex flex-col space-y-4 bg-white rounded-lg shadow-sm p-4 w-full max-w-3xl">
         <div className="flex flex-col space-y-2">
           <div className="flex items-center space-x-2">
@@ -143,6 +145,26 @@ export default function CreateChallengePage() {
             </div>
           </Form>
         </form>
+      </div>
+      <div className="flex flex-col space-y-4 max-w-3xl w-full">
+        <h2 className="text-lg font-medium">
+          Recent challenges
+        </h2>
+        <div className="flex flex-col space-y-2">
+          {recentChallenges.map((challenge) => (
+            <Link
+              to={`/challenge/${challenge.id}`} 
+              key={challenge.id}
+            >
+              <Button
+                variant="ghost"
+                className="w-full justify-start"
+              >
+                {challenge.title}
+              </Button>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   )

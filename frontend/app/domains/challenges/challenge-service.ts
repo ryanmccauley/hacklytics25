@@ -1,5 +1,6 @@
 import http from "~/lib/axios"
 import { Challenge, CreateChallengeRequest } from "./types"
+import { Message } from "~/hooks/use-chat-messages";
 
 const BASE_PATH = '/challenges'
 
@@ -7,9 +8,35 @@ export default {
   key: 'challenge',
   mutations: {
     createChallenge: async (request: CreateChallengeRequest) => {
-      const { data } = await http.post<{ id: string }>(`${BASE_PATH}/`, request);
+      const { data } = await http.post<Challenge>(`${BASE_PATH}/`, request);
       return data;
     },
+    createMessage: async (challengeId: string, message: Omit<Message, "id">) => {
+      const { data } = await http.post<Message>(`${BASE_PATH}/${challengeId}/messages`, { ...message })
+      return data
+    },
+    createChatCompletion: async function* (id: string, messages: Message[]) {
+      const { data: stream } = await http.post(
+        `${BASE_PATH}/${id}/chat-completion`,
+        { messages },
+        {
+          headers: {
+            Accept: "text/event-stream",
+          },
+          responseType: "stream",
+          adapter: "fetch",
+        },
+      )
+
+      const decoder = new TextDecoder("utf-8")
+      for await (const chunk of stream as AsyncIterable<Uint8Array>) {
+        yield decoder.decode(chunk, { stream: true })
+      }
+    },
+    completeChallenge: async (id: string, flag: string) => {
+      const { data } = await http.post(`${BASE_PATH}/${id}/complete`, { flag })
+      return data
+    }
   },
   queries: {
     getChallenge: async (id: string) => {
@@ -22,6 +49,10 @@ export default {
         responseType: 'blob'
       })
 
+      return data
+    },
+    listMessages: async (challengeId: string) => {
+      const { data } = await http.get<Message[]>(`${BASE_PATH}/${challengeId}/messages`)
       return data
     }
   }

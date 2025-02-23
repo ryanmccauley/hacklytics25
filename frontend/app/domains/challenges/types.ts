@@ -10,15 +10,24 @@ export enum ChallengeDifficulty {
   HARD = 'Hard'
 }
 
+export interface ChallengeFile {
+  file_name: string
+  content: string
+}
+
 export interface Challenge {
   id: string
   title: string
   category: ChallengeCategory
   difficulty: ChallengeDifficulty
+  setup_instructions: string
+  description: string
+  flag_solution: string
+  files: ChallengeFile[]
 }
 
 export interface CreateChallengeRequest {
   category: ChallengeCategory
   difficulty: ChallengeDifficulty
-  additionalPrompt?: string
+  additional_prompt?: string
 }

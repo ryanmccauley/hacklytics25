@@ -15,7 +15,7 @@ class CreateChallengeCommand(MediatorDTO):
   additional_prompt: Optional[str] = None
 
 class CreateChallengeResponse(MediatorDTO):
-  challenge_id: str
+  challenge: Challenge
 
 class ChallengeOuptut(BaseModel):
   model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -45,7 +45,7 @@ async def create_challenge(command: CreateChallengeCommand) -> CreateChallengeRe
 
   await engine.save(challenge)
 
-  return CreateChallengeResponse(challenge_id=str(challenge.id))
+  return CreateChallengeResponse(challenge=challenge)
 
 async def create_challenge_outline(command: CreateChallengeCommand) -> str:
   """
