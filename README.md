@@ -26,3 +26,15 @@ and the AI would create a CTF that the user can try.
 ## Tech Stack
 - Frontend: Remix, Tailwind, Shadcn, React Query
 - Backend: FastAPI, MongoDb, LangChain
+
+## Running on local
+
+Frontend
+```
+bun dev
+```
+
+Backend
+```
+uv run src/main.py
+```

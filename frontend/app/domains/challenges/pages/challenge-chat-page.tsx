@@ -7,6 +7,7 @@ import { useState } from "react"
 import ChatTextInput from "../components/chat-text-input"
 import { Badge } from "~/components/ui/badge"
 import { cn } from "~/lib/utils"
+import ViewInstructionsDialog from "../components/view-instructions-dialog"
 
 export interface ChallengeChatPageProps {
   challenge: Challenge
@@ -14,6 +15,7 @@ export interface ChallengeChatPageProps {
 
 export default ({ challenge }: ChallengeChatPageProps) => {
   const [content, setContent] = useState("")
+  const [viewInstructionsDialogOpen, setViewInstructionsDialogOpen] = useState(true)
 
   async function downloadChallengeFiles() {
     const files = await challengeService.queries.getChallengeFiles(challenge.id)
@@ -61,13 +63,19 @@ export default ({ challenge }: ChallengeChatPageProps) => {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="lg"
+          <ViewInstructionsDialog
+            open={viewInstructionsDialogOpen}
+            onOpenChange={setViewInstructionsDialogOpen}
+            instructions="hello world"
           >
-            <BookOpenIcon />
-            View Instructions
-          </Button>
+            <Button
+              variant="outline"
+              size="lg"
+            >
+              <BookOpenIcon />
+              View Instructions
+            </Button>
+          </ViewInstructionsDialog>
           <Button
             variant="outline"
             size="lg"
