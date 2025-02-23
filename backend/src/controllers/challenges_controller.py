@@ -8,6 +8,7 @@ from mediator import Mediator, get_mediator
 from odmantic import ObjectId
 from queries.get_challenge import GetChallengeQuery, GetChallengeQueryResponse
 from commands.create_challenge_download import CreateChallengeDownloadCommand, CreateChallengeDownloadResponse
+from io import BytesIO
 
 challenges_router = APIRouter(prefix="/challenges")
 
@@ -39,7 +40,7 @@ async def create_challenge(
 
   return { "id": response.challenge_id }
 
-@challenges_router.get("/{id}/download")
+@challenges_router.get("/{id}/files")
 async def create_challenge_download(
   id: str,
   mediator: Mediator[CreateChallengeDownloadCommand, CreateChallengeDownloadResponse] = Depends(get_mediator)
@@ -47,7 +48,8 @@ async def create_challenge_download(
   command = CreateChallengeDownloadCommand(challenge_id=id)
   response = await mediator.send(command)
 
-  return StreamingResponse(response.file_contents, media_type="application/zip")
+  headers = {"Content-Disposition": f"attachment; filename=challenge-{id}.zip"}
+  return StreamingResponse(BytesIO(response.file_contents), media_type="application/zip", headers=headers)
 
 @challenges_router.post("/{id}/completions")
 async def create_challenge_chat_completion(id: str):

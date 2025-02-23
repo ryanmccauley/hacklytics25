@@ -4,6 +4,7 @@ from database.mongo import engine
 import zipfile
 from odmantic import ObjectId
 from fastapi import HTTPException
+from io import BytesIO
 
 class CreateChallengeDownloadCommand(MediatorDTO):
   challenge_id: str
@@ -17,11 +18,9 @@ async def create_challenge_download(command: CreateChallengeDownloadCommand):
   if challenge is None:
     raise HTTPException(status_code=404)
 
-  zip_file = zipfile.ZipFile("challenge.zip", "w")
+  buffer = BytesIO()
+  with zipfile.ZipFile(buffer, "w") as zip_file:
+    for file in challenge.files:
+      zip_file.writestr(file.file_name, file.content)
 
-  for file in challenge.files:
-    zip_file.write(file.path, file.name)
-
-  zip_file.close()
-
-  return CreateChallengeDownloadResponse(file_contents=zip_file.read())
+  return CreateChallengeDownloadResponse(file_contents=buffer.getvalue())

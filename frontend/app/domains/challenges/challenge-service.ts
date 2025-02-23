@@ -16,6 +16,13 @@ export default {
       const { data } = await http.get<Challenge>(`${BASE_PATH}/${id}`)
     
       return data
+    },
+    getChallengeFiles: async (id: string) => {
+      const { data } = await http.get(`${BASE_PATH}/${id}/files`, {
+        responseType: 'blob'
+      })
+
+      return data
     }
   }
 } as const
