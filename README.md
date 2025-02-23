@@ -23,10 +23,6 @@ and the AI would create a CTF that the user can try.
 
 5. Once verified, the user will receive a response with the output information. The user will then be sent to a chat where they can ask for questions, clarifications, hints, and more. Instead of a flag like a normal CTF, the user will have to describe what the solution is. This ensures that the user understands the key challenge.
 
-## Tech Stack
-- Frontend: Remix, Tailwind, Shadcn, React Query
-- Backend: FastAPI, MongoDb, LangChain
-
 ## Running on local
 
 Frontend
