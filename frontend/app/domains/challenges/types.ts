@@ -1,17 +1,14 @@
 export enum ChallengeCategory {
-  WEB_SECURITY = "Web Security",
-  CRYPTOGRAPHY = "Cryptography",
-  REVERSE_ENGINEERING = "Reverse Engineering",
-  FORENSICS = "Forensics",
-  BINARY_EXPLOITATION = "Binary Exploitation",
-  MISC = "Miscellaneous"
+  WebExploitation = 'WebExploitation',
+  ReverseEngineering = 'ReverseEngineering',
+  SQLInjection = 'SQLInjection'
 }
 
 export enum ChallengeDifficulty {
-  EASY = "Easy",
-  MEDIUM = "Medium",
-  HARD = "Hard",
-  EXPERT = "Expert"
+  EASY = 'Easy',
+  MEDIUM = 'Medium',
+  HARD = 'Hard',
+  EXPERT = 'Expert'
 }
 
 export interface Challenge {
