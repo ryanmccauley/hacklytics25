@@ -15,8 +15,10 @@ app.add_middleware(
 
 app.include_router(challenges_router)
 
+
 @app.get("/")
 def health():
-  return {"status": "ok"}
+    return {"status": "ok"}
+
 
 uvicorn.run(app, host="0.0.0.0", port=8000)

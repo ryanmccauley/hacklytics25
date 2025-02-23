@@ -3,8 +3,12 @@ import ChallengeCreatePage from "~/domains/challenges/pages/challenge-create-pag
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "InstantCTF" },
+    {
+      name: "description",
+      content:
+        "Utilize LLMs to generate capture the flag challenges to train prospective software engineers on cybersecurity",
+    },
   ]
 }
 

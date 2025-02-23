@@ -4,6 +4,7 @@ import { useNavigate } from "@remix-run/react"
 import { useMutation } from "@tanstack/react-query"
 import { WandSparklesIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import * as z from "zod"
 import { Button } from "~/components/ui/button"
 import {
@@ -24,7 +25,6 @@ import { Textarea } from "~/components/ui/textarea"
 import { useLocalStorage } from "~/hooks/use-local-storage"
 import challengeService from "../challenge-service"
 import { Challenge, ChallengeCategory, ChallengeDifficulty } from "../types"
-import { toast } from "sonner"
 
 const CreateChallengeFormSchema = z.object({
   category: z.nativeEnum(ChallengeCategory),
@@ -59,7 +59,7 @@ export default function CreateChallengePage() {
     },
     onMutate: () => {
       toast("Creating challenge... This may take a few minutes")
-    }
+    },
   })
 
   return (

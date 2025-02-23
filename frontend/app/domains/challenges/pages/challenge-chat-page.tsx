@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { useEffect, useMemo, useReducer, useState } from "react"
 import ReactMarkdown from "react-markdown"
+import { toast } from "sonner"
 import { Badge } from "~/components/ui/badge"
 import { Button } from "~/components/ui/button"
 import { Message, useChatMessages } from "~/hooks/use-chat-messages"
@@ -19,7 +20,6 @@ import ChatTextInput from "../components/chat-text-input"
 import CompleteChallengeDialog from "../components/complete-challenge-dialog"
 import ViewInstructionsDialog from "../components/view-instructions-dialog"
 import { Challenge, ChallengeDifficulty } from "../types"
-import { toast } from "sonner"
 
 export interface ChallengeChatPageProps {
   challenge: Challenge
