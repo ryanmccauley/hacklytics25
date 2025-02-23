@@ -15,7 +15,15 @@ export enum ChallengeDifficulty {
 }
 
 export interface Challenge {
-  id: string
-  category: ChallengeCategory
-  difficulty: ChallengeDifficulty
+  id: string;
+  name: string;
+  description: string;
+  category: ChallengeCategory;
+  difficulty: ChallengeDifficulty;
+}
+
+export interface CreateChallengeRequest {
+  category: ChallengeCategory;
+  difficulty: ChallengeDifficulty;
+  additionalPrompt?: string;
 }

@@ -8,10 +8,27 @@ import {
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 import { ChallengeCategory, ChallengeDifficulty } from "../types"
+import { useNavigate } from "@remix-run/react"
+import challengeService from "../challenge-service"
 
 export default function CreateChallengePage() {
   const [selectedCategory, setSelectedCategory] = useState<ChallengeCategory>(ChallengeCategory.WEB_SECURITY)
   const [selectedDifficulty, setSelectedDifficulty] = useState<ChallengeDifficulty>(ChallengeDifficulty.EASY)
+  const navigate = useNavigate()
+
+  async function onSubmit() {
+    try {
+      const response = await challengeService.mutations.createChallenge({
+        category: selectedCategory,
+        difficulty: selectedDifficulty,
+        additionalPrompt: "", // Get this from the form
+      });
+      navigate(`/challenge/${response.id}`);
+    } catch (error) {
+      console.error("Error creating challenge:", error);
+      // Handle the error, show a message to the user
+    }
+  }
 
   return (
     <div className="flex flex-col h-full items-center justify-center">
@@ -85,9 +102,7 @@ export default function CreateChallengePage() {
             />
           </div>
           <div className="flex items-center justify-end">
-            <Button
-              size="lg"
-            >
+            <Button size="lg" onClick={onSubmit}>
               Create Challenge
             </Button>
           </div>
