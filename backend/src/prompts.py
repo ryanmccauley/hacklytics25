@@ -147,6 +147,7 @@ Lastly, here are some important notes:
 - The flag must be hidden in a way that is not obvious. It should not be in the code, it should not be in the HTML, it should not be in the URL. It should be hidden in a way that is not obvious.
 - The user does not have access to anything else apart from the files that you create. Please make sure that the user has all of the code/files necessary to run the CTF. As well, make sure there are detailed instructions on how to run the CTF.
 - DO NOT include the flag in the instructions.
+- DO NOT tell the user how to solve the challenge in the instructions. The user needs to figure out what is wrong and how to attack the challenge.
 """
 
 CHALLENGE_CHAT_PROMPT = """
