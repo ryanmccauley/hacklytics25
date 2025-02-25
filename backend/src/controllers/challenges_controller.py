@@ -29,7 +29,7 @@ async def get_challenge(
     ),
 ):
     query = GetChallengeQuery(challenge_id=id)
-    response = await mediator.asend(query)
+    response = await mediator.send(query)
 
     if response.challenge is None:
         raise HTTPException(status_code=404)
@@ -50,7 +50,7 @@ async def create_challenge(
         additional_prompt=request.additional_prompt,
     )
 
-    response = await mediator.asend(command)
+    response = await mediator.send(command)
 
     return response.challenge
 
@@ -63,7 +63,7 @@ async def complete_challenge(
 ):
     command = CompleteChallengeCommand(challenge_id=id, flag=request.flag)
 
-    await mediator.asend(command)
+    await mediator.send(command)
 
     return Response(status_code=204)
 
@@ -76,7 +76,7 @@ async def create_challenge_download(
     ] = Depends(get_mediator),
 ):
     command = CreateChallengeDownloadCommand(challenge_id=id)
-    response = await mediator.asend(command)
+    response = await mediator.send(command)
 
     headers = {"Content-Disposition": f"attachment; filename=challenge-{id}.zip"}
     return StreamingResponse(
@@ -92,7 +92,7 @@ async def list_messages(
     ),
 ):
     query = ListMessagesQuery(challenge_id=id)
-    response = await mediator.asend(query)
+    response = await mediator.send(query)
 
     return response.messages
 
@@ -109,7 +109,7 @@ async def create_message(
         challenge_id=id, content=request.content, role=request.role
     )
 
-    response = await mediator.asend(command)
+    response = await mediator.send(command)
 
     return response.message
 
@@ -131,6 +131,6 @@ async def create_challenge_chat_completion(
         challenge_id=id, messages=request.messages
     )
 
-    response = await mediator.asend(command)
+    response = await mediator.send(command)
 
     return response
