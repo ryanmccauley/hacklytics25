@@ -9,6 +9,7 @@ dependencies = [
     "fastapi>=0.115.8",
     "langchain[openai]>=0.3.19",
     "odmantic>=1.0.2",
+    "psutil>=7.0.0",
     "pydantic>=2.10.6",
     "pydantic-settings>=2.8.0",
     "uvicorn>=0.34.0",
